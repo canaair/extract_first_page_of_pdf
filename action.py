@@ -12,16 +12,34 @@ if not os.path.isdir(output_folder):
 
 file_names_with_ext = os.listdir(input_folder)
 
+def is_empty(file):
+    return os.stat(file).st_size == 0
+
+empty_files = []
+
 for file in file_names_with_ext:
     # read pdf and get first page
     print(f"Processing: {file}")
     file_full_path = os.path.join(input_folder, file)
-    target_file = open(file_full_path, mode='rb')
-    pdf = PdfReader(target_file)
-    first_page = pdf.pages[0]
-    output_pdf = PdfWriter()
-    output_pdf.add_page(first_page)
-    output_pdf.write(os.path.join(output_folder, file))
-    target_file.close()
-    print(f"{file} ---- Done")
-   
+    if is_empty(file_full_path):
+        empty_files.append(file)
+    else:
+        target_file = open(file_full_path, mode='rb')
+        pdf = PdfReader(target_file)
+        first_page = pdf.pages[0]
+        output_pdf = PdfWriter()
+        output_pdf.add_page(first_page)
+        output_pdf.write(os.path.join(output_folder, file))
+        target_file.close()
+        print(f"{file} ---- Done")
+
+message = "*"*18+" Empty File List "+"*"*18
+print(f"""
+{message}
+      """)
+for empty_file in empty_files:
+    print(empty_file)
+print(f"""
+Total: {len(empty_files)}
+{message}
+      """)
