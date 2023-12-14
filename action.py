@@ -40,6 +40,6 @@ print(f"""
 for empty_file in empty_files:
     print(empty_file)
 print(f"""
-Total: {len(empty_files)}
+Total: {len(empty_files)} / {len(file_names_with_ext)}
 {message}
       """)
